@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOM SANDBOX - Strength of Materials</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<body>
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="header">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 12h16M4 6v12M20 6v12M9 12l3-6 3 6M9 12v6"/>
+                    </svg>
+                </div>
+                <div class="title-group" style="flex-shrink: 0;">
+                    <h1>SOM SANDBOX</h1>
+                    <p>Strength of Materials Sandbox</p>
+                </div>
+                <div class="input-mode-toggle">
+                    <button class="btn active" id="text-mode-btn">Text Mode</button>
+                    <button class="btn" id="guided-mode-btn">Guided Mode</button>
+                </div>
+            </div>
+            <div class="tagline">
+                <i>Interactive Learning &middot; Visualize &middot; Solve &middot; Understand</i>
+            </div>
+            <div class="controls-section" style="flex-grow: 1; justify-content: flex-end;">
+                <div class="view-toggle-group" id="view-toggle-group">
+                    <button class="btn active" id="tab-learn">Learn</button>
+                    <button class="btn" id="tab-design">Design</button>
+                </div>
+                <div class="button-group" id="display-toggle-group">
+                    <button class="btn active" id="btn-show-steps">Show Steps</button>
+                    <button class="btn" id="btn-fast-result">Fast Result</button>
+                    <button class="btn" id="btn-detailed">Detailed</button>
+                </div>
+                <div class="icon-buttons" style="display: flex; align-items: center;">
+                    <span class="icon" id="theme-toggle">☼</span>
+                    <span class="icon" id="btn-import-question">📥</span> <!-- Placeholder for Import Question -->
+                    <span class="icon" id="btn-export-pdf">📄</span> <!-- Placeholder for Export PDF -->
+                    <button id="hamburger-menu-btn" class="icon">☰</button>
+                </div>
+            </div>
+        </header>
+
+        <!-- SIDE MENU -->
+        <div id="side-menu">
+            <a href="#" id="menu-home">Home</a>
+            <a href="#" id="menu-privacy">Privacy</a>
+            <a href="#" id="menu-settings">Settings</a>
+            <a href="#" id="menu-feedback">Feedback</a>
+            <a href="#" id="menu-follow">Follow</a>
+            <a href="#" id="menu-help">Help</a>
+            <a href="#" id="menu-support">Support (Donation)</a>
+        </div>
+
+        <div class="main-content">
+            <!-- LEFT PANEL -->
+            <aside class="left-panel">
+                <section class="panel-section" id="text-input-panel">
+                    <h2 class="section-title">INPUT CONSOLE</h2>
+                    <div class="input-group">
+                        <span class="prompt-arrow">&gt;</span>
+                        <input type="text" id="cmd-input" placeholder="e.g. SSB L=6m P=5kN @2m" value="">
+                        <button id="btn-run" class="btn-primary">Run</button>
+                    </div>
+                    <div id="interpreted-as-display" style="font-size: 0.8em; color: var(--text-muted); margin-top: 5px;"></div>
+                    <div class="examples" style="margin-top: 8px;">
+                        Examples: 
+                        <a href="#" class="example-link">SSB L=6m P=5kN @2m</a> | 
+                        <a href="#" class="example-link">Cantilever 4m UDL 10kN/m</a>
+                    </div>
+                </section>
+
+                <!-- GUIDED INPUT PANEL -->
+                <section class="panel-section" id="guided-input-panel" style="display: none;">
+                    <h2 class="section-title">GUIDED INPUT</h2>
+                    
+                    <div class="guided-section">
+                        <h3>Beam Section:</h3>
+                        <label>
+                            Beam Type:
+                            <select id="guided-beam-type">
+                                <option value="ssb">Simply Supported Beam (SSB)</option>
+                                <option value="cantilever">Cantilever</option>
+                            </select>
+                        </label>
+                        <label>
+                            Length (m):
+                            <input type="number" id="guided-beam-length" value="6" min="0.1" step="0.1">
+                        </label>
+                    </div>
+
+                    <div class="guided-section">
+                        <h3>Loads Section:</h3>
+                        <div class="add-load-buttons">
+                            <button class="btn" id="add-point-load-btn">+ Add Point Load</button>
+                            <button class="btn" id="add-udl-btn">+ Add UDL</button>
+                        </div>
+                        <div id="guided-loads-container" style="margin-top: 10px;">
+                            <!-- Load cards will be injected here by JS -->
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px; text-align: center;">
+                        <button class="btn-primary" style="width: 100%;">Run Guided Analysis</button>
+                    </div>
+                </section>
+
+                <section class="panel-section history-section">
+                    <div class="history-header">
+                        <h2 class="section-title">HISTORY</h2>
+                        <span class="icon-trash" id="clear-history-btn">🗑</span>
+                    </div>
+                    <ul class="history-list" id="history-list">
+                        <!-- History injected via JS -->
+                    </ul>
+                </section>
+
+            </aside>
+
+            <!-- CENTER PANEL (Diagrams) -->
+            <main class="center-panel">
+                <section class="panel-section diagram-section"> <!-- Removed numerical-results from here -->
+                    <h2 class="diagram-title">BEAM DIAGRAM</h2>
+                    <div class="svg-container" id="beam-container"></div>
+                </section>
+                
+                <section class="panel-section diagram-section"> <!-- Removed numerical-results from here -->
+                    <h2 class="diagram-title">SHEAR FORCE DIAGRAM (SFD)</h2>
+                    <div class="svg-container" id="sfd-container"></div>
+                </section>
+
+                <section class="panel-section diagram-section"> <!-- Removed numerical-results from here -->
+                    <h2 class="diagram-title">BENDING MOMENT DIAGRAM (BMD)</h2>
+                    <div class="svg-container" id="bmd-container"></div>
+                </section>
+            </main>
+
+            <!-- RIGHT PANEL (Steps + Numerical Results) -->
+            <aside class="right-panel">
+                <section class="panel-section steps-section" id="steps-container" style="flex: 1;">
+                    <h2 class="section-title">STEP-BY-STEP SOLUTION</h2>
+                    <div class="steps-content" id="steps-content"></div>
+                </section>
+                <section class="panel-section numerical-results"> <!-- Moved numerical-results here -->
+                    <h2 class="section-title">NUMERICAL RESULTS</h2>
+                    <div class="results-grid" id="results-grid">
+                    </div>
+                </section>
+            </aside>
+        </div>
+    </div>
+    
+    <!-- MODAL SYSTEM -->
+    <div id="modal-overlay">
+        <div id="modal-box">
+            <div class="modal-header">
+                <h2 id="modal-title">Title</h2>
+                <button id="modal-close-btn" class="modal-close">&times;</button>
+            </div>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="parser.js"></script>
+    <script src="model.js"></script>
+    <script src="solver.js"></script>
+    <script src="learning.js"></script>
+    <script src="canvas.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
