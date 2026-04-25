@@ -887,6 +887,30 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (err) {
         console.error("Initial application render failed:", err);
     }
+
+    // --- Mobile Tab Navigation Logic ---
+    const mobileTabs = document.querySelectorAll('.mobile-tab-btn');
+    const centerPanel = document.querySelector('.center-panel');
+    
+    // Set default active panel for mobile
+    if (DOM.leftPanel) DOM.leftPanel.classList.add('mobile-active');
+
+    mobileTabs.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active states
+            mobileTabs.forEach(t => t.classList.remove('active'));
+            if (DOM.leftPanel) DOM.leftPanel.classList.remove('mobile-active');
+            if (centerPanel) centerPanel.classList.remove('mobile-active');
+            if (DOM.rightPanel) DOM.rightPanel.classList.remove('mobile-active');
+
+            // Set clicked tab and target panel to active
+            btn.classList.add('active');
+            const target = btn.getAttribute('data-target');
+            if (target === 'left-panel' && DOM.leftPanel) DOM.leftPanel.classList.add('mobile-active');
+            if (target === 'center-panel' && centerPanel) centerPanel.classList.add('mobile-active');
+            if (target === 'right-panel' && DOM.rightPanel) DOM.rightPanel.classList.add('mobile-active');
+        });
+    });
 });
 
 // --- Preprocessing Function for Natural Language Input ---

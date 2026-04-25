@@ -188,6 +188,9 @@ body {
 
 .icon-buttons .icon { font-size: 20px; cursor: pointer; color: var(--text-muted); margin-left: 8px;}
 
+/* Mobile Tabs (Hidden on Desktop) */
+.mobile-tabs { display: none; }
+
 /* Main Layout */
 .main-content { /* Changed to flex for 3-column layout */
     display: flex;
@@ -534,3 +537,111 @@ body {
 .modal-btn { background: var(--primary-blue); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; width: 100%;}
 .modal-btn:hover { background: var(--primary-blue-hover); }
 .modal-textarea { width: 100%; min-height: 100px; padding: 8px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 4px; font-family: var(--font-ui); resize: vertical; box-sizing: border-box;}
+
+/* --- Responsive Mobile Layout --- */
+@media (max-width: 768px) {
+    body {
+        height: auto;
+        overflow-y: auto; /* Allow entire page to scroll */
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 12px;
+        height: auto;
+    }
+
+    .logo-section {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .controls-section {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 12px;
+    }
+
+    /* Mobile Tabs Display */
+    .mobile-tabs {
+        display: flex;
+        background: var(--bg-panel);
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .mobile-tab-btn {
+        flex: 1;
+        padding: 12px 0;
+        background: none;
+        border: none;
+        border-bottom: 3px solid transparent;
+        font-weight: 600;
+        color: var(--text-muted);
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .mobile-tab-btn.active {
+        color: var(--primary-blue);
+        border-bottom-color: var(--primary-blue);
+    }
+
+    .main-content {
+        flex-direction: column;
+        height: auto;
+        overflow: visible;
+        padding: 12px;
+        gap: 16px;
+    }
+
+    /* Hide all panels by default on mobile, let JS toggle them via mobile-active class */
+    .left-panel, 
+    .center-panel, 
+    .right-panel {
+        display: none !important; 
+        flex: none;
+        width: 100%;
+        height: auto;
+        overflow-y: visible; /* Remove internal scrollbars */
+    }
+
+    .left-panel.mobile-active,
+    .center-panel.mobile-active,
+    .right-panel.mobile-active {
+        display: flex !important;
+    }
+
+    /* Right panel specific reordering */
+    .right-panel {
+        flex-direction: column;
+    }
+
+    #steps-container {
+        order: 2;
+    }
+
+    .numerical-results {
+        order: 1;
+        margin-bottom: 12px;
+    }
+
+    .results-grid {
+        grid-template-columns: 1fr; /* Stack numerical results */
+        gap: 12px;
+    }
+
+    /* Ensure canvas elements scale correctly without overflowing */
+    .svg-container svg {
+        width: 100%;
+        height: auto;
+        display: block;
+    }
+    
+    /* Improve readability of steps */
+    .steps-content {
+        font-size: 14px;
+        line-height: 1.8;
+    }
+}
