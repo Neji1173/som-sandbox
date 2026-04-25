@@ -442,12 +442,6 @@ function generateTextFromGuidedInput(guidedInputState) {
     return text;
 }
 
-// --- Future Feature Stubs ---
-function importQuestion() {
-    alert("Import Question functionality is not yet implemented.");
-    // Will support text/image-based parsing later
-}
-
 async function exportToPDF() {
     try {
         const { jsPDF } = window.jspdf;
@@ -817,7 +811,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Future Feature Stubs
-    if (DOM.importQuestionBtn) DOM.importQuestionBtn.addEventListener('click', importQuestion);
     if (DOM.exportPdfBtn) DOM.exportPdfBtn.addEventListener('click', exportToPDF);
 
     // Hamburger Menu Toggle
@@ -858,24 +851,151 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const id = link.id;
             if (id === 'menu-privacy') {
-                openModal("Privacy Policy", "<p>Your privacy is important to us. This app stores all configurations locally on your browser.</p>");
+                openModal("Privacy Policy", `
+                    <p><strong>SOM Sandbox Privacy Policy</strong></p>
+
+                    <p>This application is designed as a client-side educational tool. We respect your privacy and do not collect or store any personal data.</p>
+
+                <ul>
+                    <li>No user data is stored on servers.</li>
+                    <li>No login or account is required.</li>
+                    <li>All calculations are performed locally in your browser.</li>
+                    <li>Your inputs remain private and are not shared.</li>
+                </ul>
+
+                <p><strong>Feedback & Communication:</strong><br>
+                    If you voluntarily provide feedback, it is used only to improve the application.</p>
+
+                <p><strong>Updates:</strong><br>
+                    This policy may be updated as the application evolves.</p>
+
+                <p>By using SOM Sandbox, you agree to this policy.</p>
+                `); 
             } else if (id === 'menu-settings') {
                 openSettingsModal();
             } else if (id === 'menu-feedback') {
-                openModal("Feedback", `<textarea id="feedback-text" class="modal-textarea" placeholder="Tell us your feedback..."></textarea><button id="submit-feedback-btn" class="modal-btn">Submit</button>`);
-                setTimeout(() => {
-                    safeAddListener('submit-feedback-btn', 'click', () => { 
-                        const feedbackInput = document.getElementById('feedback-text');
-                        if(feedbackInput) console.log(feedbackInput.value); 
-                        closeModal(); 
-                    });
-                }, 0);
+                openModal("Feedback", `
+                <p>We value your feedback! Help improve SOM Sandbox.</p>
+
+                <textarea id="feedback-text" class="modal-textarea" placeholder="Note: Please share your thoughts and suggestions via below mentioned mail. Here we didnt update the cloud sync✌️"></textarea>
+
+                <p style="margin-top:10px; font-size:13px;">
+                Or email directly: <br>
+                <strong>feathersstudio2173@gmail.com</strong>
+                </p>
+
+                <button id="submit-feedback-btn" class="modal-btn">Submit</button>
+                `);
             } else if (id === 'menu-help') {
-                openHelpModal();
+                openModal("Help & Instructions", `
+                <p><strong>Welcome to SOM Sandbox</strong></p>
+
+                <p>This tool helps you understand and solve Strength of Materials (SOM) problems interactively.</p>
+
+                <hr>
+
+                <p><strong>[1] Input Methods</strong></p>
+                <ul>
+                    <li><strong>Text Mode:</strong> Type commands like:<br>
+                    <code>SSB L=6m P=5kN @2m</code></li>
+                    <li><strong>Guided Mode:</strong> Use buttons and fields to define loads visually.</li>
+                </ul>
+
+                <p><strong>[2] Beam Types Supported</strong></p>
+                <ul>
+                    <li>Simply Supported Beam (SSB)</li>
+                    <li>Cantilever Beam</li>
+                </ul>
+
+                <p><strong>[3] Load Types</strong></p>
+                <ul>
+                    <li>Point Load (P)</li>
+                    <li>Uniformly Distributed Load (UDL)</li>
+                </ul>
+
+                <p><strong>[4] Outputs Explained</strong></p>
+                <ul>
+                    <li><strong>Reactions:</strong> Support forces</li>
+                    <li><strong>SFD:</strong> Shear Force Diagram</li>
+                    <li><strong>BMD:</strong> Bending Moment Diagram</li>
+                </ul>
+
+                <p><strong>[5] Modes</strong></p>
+                <ul>
+                    <li><strong>Fast Result:</strong> Direct answers</li>
+                    <li><strong>Show Steps:</strong> Step-by-step solution</li>
+                    <li><strong>Detailed:</strong> Full breakdown with formulas</li>
+                </ul>
+
+                <p><strong>[6] Tips</strong></p>
+                <ul>
+                    <li>Use correct units (m, kN)</li>
+                    <li>Check load positions carefully</li>
+                    <li>Use Guided Mode if unsure</li>
+                </ul>
+
+                <hr>
+
+                <p style="font-size:13px;">
+                Built for learning, visualization, and understanding core engineering concepts.
+                </p>
+                `);
             } else if (id === 'menu-follow') {
-                openModal("Follow Us", `<ul><li><a href="#" target="_blank">LinkedIn</a></li><li><a href="#" target="_blank">GitHub</a></li><li><a href="#" target="_blank">YouTube</a></li></ul>`);
-            } else if (id === 'menu-support') {
-                openModal("Support", `<p>Support development by sharing this tool with fellow engineers!</p>`);
+                openModal("Follow Us", `
+                <p><strong>Connect with Feather's Studio</strong></p>
+
+                <ul style="list-style:none; padding-left:0; line-height:1.8;">
+                    <li>
+                        📺 <strong>YouTube:</strong><br>
+                        <a href="www.youtube.com/@featherscilab-2173" target="_blank">
+                            @Feather Sci Lab
+                        </a>
+                    </li>
+
+                    <li>
+                        📸 <strong>Instagram:</strong><br>
+                        <a href="https://www.instagram.com/__f_s_l___?igsh=MTZnY2M5ZzF0MzZ6dw==" target="_blank">
+                            @__f_s_l___
+                        </a>
+                    </li>
+
+                    <li>
+                        💼 <strong>LinkedIn:</strong><br>
+                        <a href="www.linkedin.com/in/nithishkannan-b-007-" target="_blank">
+                            Creator: Mr. Neji
+                        </a>
+                    </li>
+
+                    <li>
+                        ✉️ <strong>Email:</strong><br>
+                        <a href="mailto:feathersstudio2173@gmail.com">
+                            feathersstudio2173@gmail.com
+                        </a>
+                    </li>
+                </ul>
+
+                <p style="margin-top:10px; font-size:13px; color:#666;">
+                Follow for updates, tools, and engineering content 🚀
+                </p>
+                `);
+                } else if (id === 'menu-support') {
+                openModal("Support SOM Sandbox", `
+                    <p><strong>Support Development ❤️</strong></p>
+
+                    <p>If you find this tool helpful for your studies or projects, you can support its development.</p>
+ 
+                    <p><strong>UPI ID:</strong><br>
+                    <code>nithishkannan1173@okaxis</code></p>
+
+                    <p style="font-size:13px; color:#666;">
+                    Note: Sharing a UPI ID is safe. It only allows others to send money to you. 
+                    No one can access or withdraw from your bank account using your UPI ID.
+                    </p>
+
+                    <p>Your support helps improve features, add new modules, and keep this tool free.</p>
+
+                    <p>Thank you for supporting SOM Sandbox 🙏</p>
+                `);
             }
         });
     });
